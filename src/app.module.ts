@@ -1,21 +1,31 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import * as dotenv from 'dotenv';
-import { connectionParams } from '@/data-source';
+import { AuthModule } from '@/module/Auth/auth.module';
+import { DatabaseModule } from '@/module/Database/database.module';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { JwtAuthGuard } from '@/module/Auth/guards';
+import { SerializeInterceptor } from '@/common/Interceptors';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(connectionParams),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
       load: [() => dotenv.config({ path: '.env' })],
     }),
+    DatabaseModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: SerializeInterceptor,
+    },
+  ],
 })
 export class AppModule {}
