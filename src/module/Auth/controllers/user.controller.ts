@@ -9,7 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { UserService } from '@/module/Auth/services';
-import { PaginateUserDto, UpdateUserDto } from '@/module/Auth/dtos';
+import {
+  PaginateUserDto,
+  SetRolesDto,
+  UpdateUserDto,
+} from '@/module/Auth/dtos';
 import { omit } from 'lodash';
 
 @Controller('user')
@@ -33,5 +37,10 @@ export class UserController {
   @Patch()
   async update(@Body() dto: UpdateUserDto) {
     return await this.userService.update(dto.id, omit(dto, 'id'));
+  }
+
+  @Post('setRoles')
+  async setRoles(@Body() dto: SetRolesDto) {
+    return await this.userService.setRoles(dto);
   }
 }

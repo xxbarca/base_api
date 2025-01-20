@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -61,3 +62,15 @@ export class SignInUserDto extends PickType(UserCommonDto, [
   'password',
   'username',
 ]) {}
+
+export class SetRolesDto {
+  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsUUID(undefined, { each: true })
+  @IsArray()
+  @IsNotEmpty()
+  roles: [];
+}
