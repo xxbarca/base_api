@@ -93,4 +93,13 @@ export abstract class BaseService<
     );
     return paginate(qb, options);
   }
+
+  async update(id: string, other: Record<string, any>): Promise<E> {
+    try {
+      await this.repository.update(id, other);
+      return await this.detail(id);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

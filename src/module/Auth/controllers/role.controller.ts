@@ -14,6 +14,7 @@ import {
   PaginateRoleDto,
   UpdateRoleDto,
 } from '@/module/Auth/dtos';
+import { omit } from 'lodash';
 
 @Controller('role')
 export class RoleController {
@@ -26,7 +27,7 @@ export class RoleController {
 
   @Patch()
   async update(@Body() dto: UpdateRoleDto) {
-    return await this.roleService.update(dto);
+    return await this.roleService.update(dto.id, omit(dto, 'id'));
   }
 
   @Delete(':id')

@@ -43,34 +43,40 @@ export class UserEntity extends BaseEntity {
     comment: '邮箱',
     nullable: true,
   })
+  @Expose()
   email: string;
 
   @Column({
     comment: '手机',
     nullable: true,
   })
+  @Expose()
   phone: string;
 
   @Column({
     comment: '头像',
     nullable: true,
   })
+  @Expose()
   avatar: string;
 
   @Column({
     comment: '描述',
     nullable: true,
   })
+  @Expose()
   description: string;
 
   @CreateDateColumn({
     comment: '创建时间',
   })
+  @Expose()
   created_at: Date;
 
   @UpdateDateColumn({
     comment: '更新时间',
   })
+  @Expose()
   updated_at: Date;
 
   @Column({ nullable: true })
