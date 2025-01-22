@@ -15,7 +15,7 @@ export class PermissionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ comment: '组件', default: 'LAYOUT' })
+  @Column({ comment: '组件', nullable: true })
   component: string;
 
   @Column({ comment: 'icon', nullable: true })
@@ -27,7 +27,7 @@ export class PermissionEntity extends BaseEntity {
   @Column({ comment: '排序', default: 1 })
   orderNo: number;
 
-  @Column({ comment: '路径', nullable: false })
+  @Column({ comment: '路径', nullable: true })
   path: string;
 
   @ManyToOne(() => PermissionEntity, (p) => p.children, {

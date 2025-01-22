@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateIf,
 } from 'class-validator';
 import { PartialType, PickType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -13,12 +14,14 @@ import { toNumber } from 'lodash';
 
 class CommonPermissionDto {
   @IsString()
+  @ValidateIf((o) => o.type !== AccessType.BUTTON)
   component: string;
 
   @IsString()
   icon: string;
 
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsNumber()
@@ -28,6 +31,7 @@ class CommonPermissionDto {
 
   @IsString()
   @IsOptional()
+  @ValidateIf((o) => o.type !== AccessType.BUTTON)
   path: string;
 
   @IsUUID()
@@ -35,7 +39,7 @@ class CommonPermissionDto {
   @IsOptional()
   parent: string;
 
-  @IsEnum(AccessType)
+  @IsEnum(AccessStatus)
   @IsOptional()
   status: AccessStatus;
 
