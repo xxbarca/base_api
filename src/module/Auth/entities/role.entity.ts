@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -10,6 +11,7 @@ import {
 import type { Relation } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { RoleStatus } from '../enums';
+import { PermissionEntity } from './permission.entity';
 
 @Entity({ name: 'role' })
 export class RoleEntity extends BaseEntity {
@@ -55,4 +57,12 @@ export class RoleEntity extends BaseEntity {
 
   @ManyToMany(() => UserEntity, (user) => user.roles)
   users: Relation<UserEntity>[];
+
+  @ManyToMany(() => PermissionEntity, (p) => p.roles)
+  @JoinTable({
+    name: 'permissions_roles',
+    joinColumn: { name: 'role_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'permission_id', referencedColumnName: 'id' },
+  })
+  permissions: Relation<PermissionEntity>[];
 }

@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -58,4 +59,16 @@ export class PaginateRoleDto
   @Min(1, { message: '每页显示数据必须大于10' })
   @IsNumber()
   limit?: number = 10;
+}
+
+export class SetPermissionsDto {
+  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsUUID(undefined, { each: true })
+  @IsArray()
+  @IsNotEmpty()
+  permissions: Array<string>;
 }

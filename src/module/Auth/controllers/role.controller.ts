@@ -12,6 +12,7 @@ import { RoleService } from '@/module/Auth/services';
 import {
   CreateRoleDto,
   PaginateRoleDto,
+  SetPermissionsDto,
   UpdateRoleDto,
 } from '@/module/Auth/dtos';
 import { omit } from 'lodash';
@@ -48,5 +49,10 @@ export class RoleController {
   @Get(':id')
   async detail(@Param('id', ParseUUIDPipe) id: string) {
     return await this.roleService.detail(id);
+  }
+
+  @Post('setPermissions')
+  async setPermissions(@Body() dto: SetPermissionsDto) {
+    return await this.roleService.setPermissions(dto);
   }
 }

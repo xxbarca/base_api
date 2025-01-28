@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -10,6 +11,7 @@ import {
 } from 'typeorm';
 import type { Relation } from 'typeorm';
 import { AccessStatus, AccessType } from '../enums';
+import { RoleEntity } from './role.entity';
 @Entity({ name: 'permission' })
 export class PermissionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -45,6 +47,9 @@ export class PermissionEntity extends BaseEntity {
     comment: '是否禁用',
   })
   status: AccessStatus;
+
+  @ManyToMany(() => RoleEntity, (r) => r.permissions)
+  roles: Relation<RoleEntity>[];
 
   @Column({
     type: 'enum',
