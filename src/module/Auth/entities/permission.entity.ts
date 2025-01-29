@@ -20,6 +20,9 @@ export class PermissionEntity extends BaseEntity {
   @Column({ comment: '组件', nullable: true })
   component: string;
 
+  @Column({ comment: '权限值, 一般针对按钮', nullable: true, unique: true })
+  value: string;
+
   @Column({ comment: 'icon', nullable: true })
   icon: string;
 
