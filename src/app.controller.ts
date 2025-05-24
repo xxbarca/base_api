@@ -9,4 +9,9 @@ export class AppController {
   getConfigService(): ConfigService {
     return this.configService;
   }
+
+  @Get('host')
+  getMysqlHost(): string {
+    return this.configService.get('MYSQL_PORT');
+  }
 }
