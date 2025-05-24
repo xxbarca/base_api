@@ -1,0 +1,26 @@
+[mysqld]
+# 基础配置
+user=mysql
+default-storage-engine=INNODB
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+pid-file=/var/lib/mysql/mysqld.pid
+socket=/var/lib/mysql/mysqld.sock
+bind-address=0.0.0.0  # 允许所有 IP 访问
+
+# 性能优化
+max_connections=200
+wait_timeout=600
+interactive_timeout=600
+innodb_buffer_pool_size=1G  # 根据宿主机内存调整
+
+# 安全配置
+skip-name-resolve  # 禁用反向解析（解决 DNS 警告）
+expire_logs_days=7  # 日志保留天数
+
+[client]
+default-character-set=utf8mb4
+
+[mysql]
+default-character-set=utf8mb4
+
