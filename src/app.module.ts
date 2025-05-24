@@ -1,17 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import * as dotenv from 'dotenv';
+import { DatabaseModule } from '@/modules/Database/database.module';
+import { MallModule } from '@/modules/Mall/mall.module';
+import { ConfigurationModule } from '@/modules/Mall/ConfigurationModule/configuration.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
-      load: [() => dotenv.config({ path: '.env' })],
-    }),
-  ],
+  imports: [ConfigurationModule, DatabaseModule, MallModule],
   controllers: [AppController],
   providers: [AppService],
 })

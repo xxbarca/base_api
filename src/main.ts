@@ -1,9 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
+const PORT = process.env.PORT ?? 3000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('/api');
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(PORT);
 }
-bootstrap();
+bootstrap().then(() => {
+  console.log(`app started at port: ${PORT}`);
+});
