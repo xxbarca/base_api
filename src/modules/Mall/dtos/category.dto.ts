@@ -11,8 +11,14 @@ import { DtoValidation } from '@/modules/Core/decorators';
 import { Transform } from 'class-transformer';
 import { OnlineStatus } from '@/modules/Mall/constants';
 import { toNumber } from 'lodash';
+import { IsUnique } from '@/modules/Database/constraints';
+import { CategoryEntity } from '@/modules/Mall/entities';
 
 export class CommonCategoryDto {
+  @IsUnique(CategoryEntity, {
+    groups: ['create'],
+    message: '分类名已存在',
+  })
   @IsString({ always: true })
   @IsNotEmpty({ groups: ['create'] })
   @IsOptional({ groups: ['update'] })
