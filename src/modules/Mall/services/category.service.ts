@@ -9,6 +9,7 @@ import { CategoryEntity } from '@/modules/Mall/entities';
 import { CategoryRepository } from '@/modules/Mall/repositories';
 import { CreateCategoryDto, UpdateCategoryDto } from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
+import { OnlineStatus } from '@/modules/Mall/constants';
 
 @Injectable()
 export class CategoryService extends BaseService<
@@ -62,5 +63,33 @@ export class CategoryService extends BaseService<
 
   async delete(id: string) {
     return await super.delete(id);
+  }
+
+  async switchStatus(id: string) {
+    const category = await this.repository.findOne({
+      where: { id: id },
+      relations: ['children'],
+    });
+    const status =
+      category.online === OnlineStatus.ONLINE
+        ? OnlineStatus.OFFLINE
+        : OnlineStatus.ONLINE;
+    try {
+      const children = category.children;
+      if (children && children.length > 0) {
+        for (const child of children) {
+          if (category.online === OnlineStatus.ONLINE) {
+            await this.repository.update(child.id, {
+              online: OnlineStatus.OFFLINE,
+            });
+          }
+        }
+      }
+      await this.repository.update(id, { online: status });
+      return '修改状态成功';
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('修改状态失败', HttpStatus.BAD_REQUEST);
+    }
   }
 }

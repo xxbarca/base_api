@@ -34,4 +34,9 @@ export class CategoryController {
   async detail(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.detail(id);
   }
+
+  @Patch('switchStatus/:id')
+  async switchStatus(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.switchStatus(id);
+  }
 }
