@@ -1,10 +1,13 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { connectionParams } from '@/data-source';
-import { UniqueConstraint } from '@/modules/Database/constraints';
+import {
+  DataExistConstraint,
+  UniqueConstraint,
+} from '@/modules/Database/constraints';
 
 @Module({
   imports: [TypeOrmModule.forRoot(connectionParams)],
-  providers: [UniqueConstraint],
+  providers: [UniqueConstraint, DataExistConstraint],
 })
 export class DatabaseModule {}

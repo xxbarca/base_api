@@ -5,13 +5,14 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateIf,
 } from 'class-validator';
 import { PickType } from '@nestjs/swagger';
 import { DtoValidation } from '@/modules/Core/decorators';
 import { Transform } from 'class-transformer';
 import { OnlineStatus } from '@/modules/Mall/constants';
 import { toNumber } from 'lodash';
-import { IsUnique } from '@/modules/Database/constraints';
+import { IsDataExist, IsUnique } from '@/modules/Database/constraints';
 import { CategoryEntity } from '@/modules/Mall/entities';
 
 export class CommonCategoryDto {
@@ -41,7 +42,9 @@ export class CommonCategoryDto {
   @IsOptional({ groups: ['update'] })
   online: OnlineStatus;
 
+  @IsDataExist(CategoryEntity, { always: true, message: '父分类不存在' })
   @IsUUID(undefined, { always: true, message: '父分类格式不正确' })
+  @ValidateIf((value) => value.parent !== null && value.parent)
   @IsString({ always: true })
   @IsOptional({ always: true })
   parent: string;
