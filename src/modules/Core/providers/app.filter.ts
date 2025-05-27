@@ -11,7 +11,7 @@ import {
   QueryFailedError,
 } from 'typeorm';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { isObject } from 'lodash';
+import { isObject, omit } from 'lodash';
 
 @Catch()
 export class AppFilter<T = Error> extends BaseExceptionFilter<T> {
@@ -53,9 +53,12 @@ export class AppFilter<T = Error> extends BaseExceptionFilter<T> {
       }
     }
     const message = isObject(res)
-      ? res
+      ? {
+          ...omit(res, ['statusCode']),
+          code: res['statusCode'],
+        }
       : {
-          statusCode: status,
+          code: status,
           message: res,
         };
     applicationRef!.reply(host.getArgByIndex(1), message, status);
