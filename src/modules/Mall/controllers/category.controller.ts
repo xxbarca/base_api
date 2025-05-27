@@ -39,4 +39,9 @@ export class CategoryController {
   async switchStatus(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.switchStatus(id);
   }
+
+  @Get('/all/list')
+  async list() {
+    return await this.service.list();
+  }
 }

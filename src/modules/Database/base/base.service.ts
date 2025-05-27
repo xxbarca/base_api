@@ -1,11 +1,12 @@
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { BaseRepository } from '@/modules/Database/base/base.repository';
-import { QueryHook } from '@/modules/Database/types';
+import { QueryHook, ServiceListQueryOption } from '@/modules/Database/types';
 import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 
 export abstract class BaseService<
   E extends ObjectLiteral,
   R extends BaseRepository<E>,
+  P extends ServiceListQueryOption<E> = ServiceListQueryOption<E>,
 > {
   protected repository: R;
 
@@ -58,5 +59,26 @@ export abstract class BaseService<
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async list(options?: P, callback?: QueryHook<E>) {
+    const qb = await this.buildListQB(
+      this.repository.buildBaseQB(),
+      options,
+      callback,
+    );
+    return qb.getMany();
+  }
+
+  protected async buildListQB(
+    qb: SelectQueryBuilder<E>,
+    options?: P,
+    callback?: QueryHook<E>,
+  ) {
+    const wheres = Object.fromEntries(
+      Object.entries(options || {}).map(([key, value]) => [key, value]),
+    );
+    qb = qb.where(wheres);
+    return callback ? callback(qb) : qb;
   }
 }
