@@ -7,10 +7,7 @@ export class CategoryController {
   constructor(private service: CategoryService) {}
 
   @Post()
-  async create(
-    @Body()
-    dto: CreateCategoryDto,
-  ) {
-    console.log(dto);
+  async create(@Body() dto: CreateCategoryDto) {
+    return await this.service.create(dto);
   }
 }
