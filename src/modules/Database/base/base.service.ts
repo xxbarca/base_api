@@ -1,7 +1,7 @@
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { BaseRepository } from '@/modules/Database/base/base.repository';
 import { QueryHook } from '@/modules/Database/types';
-import { NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 
 export abstract class BaseService<
   E extends ObjectLiteral,
@@ -34,5 +34,13 @@ export abstract class BaseService<
         `${this.repository.qbName} ${id} not exists!`,
       );
     return item;
+  }
+
+  async update(id: string, other: Record<string, any>) {
+    try {
+      return await this.repository.update(id, other);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

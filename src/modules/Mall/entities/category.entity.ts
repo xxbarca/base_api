@@ -51,7 +51,9 @@ export class CategoryEntity extends BasicEntity {
   @OneToMany(() => CategoryEntity, (cate) => cate.parent)
   children: Relation<CategoryEntity>[];
 
-  @ManyToOne(() => CategoryEntity, (cate) => cate.children)
+  @ManyToOne(() => CategoryEntity, (cate) => cate.children, {
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'parent_id' })
   parent: Relation<CategoryEntity> | null;
 }

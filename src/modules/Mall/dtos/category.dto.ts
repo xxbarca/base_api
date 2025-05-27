@@ -7,7 +7,7 @@ import {
   IsUUID,
   ValidateIf,
 } from 'class-validator';
-import { PickType } from '@nestjs/swagger';
+import { PartialType, PickType } from '@nestjs/swagger';
 import { DtoValidation } from '@/modules/Core/decorators';
 import { Transform } from 'class-transformer';
 import { OnlineStatus } from '@/modules/Mall/constants';
@@ -58,3 +58,11 @@ export class CreateCategoryDto extends PickType(CommonCategoryDto, [
   'online',
   'parent',
 ]) {}
+
+@DtoValidation({ groups: ['update'] })
+export class UpdateCategoryDto extends PartialType(CommonCategoryDto) {
+  @IsDataExist(CategoryEntity, { always: true, message: '分类不存在' })
+  @IsUUID(undefined, { message: '分类id不正确' })
+  @IsNotEmpty({ message: 'id不能为空' })
+  id: string;
+}

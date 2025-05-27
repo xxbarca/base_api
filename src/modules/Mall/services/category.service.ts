@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { BaseService } from '@/modules/Database/base';
 import { CategoryEntity } from '@/modules/Mall/entities';
 import { CategoryRepository } from '@/modules/Mall/repositories';
-import { CreateCategoryDto } from '@/modules/Mall/dtos';
+import { CreateCategoryDto, UpdateCategoryDto } from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
 
 @Injectable()
@@ -31,7 +36,26 @@ export class CategoryService extends BaseService<
     } else {
       item = await this.repository.save(omit(data, ['parent']));
     }
-    return await super.detail(item.id, async (qb) =>
+    return await this.detail(item.id);
+  }
+
+  async updateData(data: UpdateCategoryDto) {
+    if (data.parent) {
+      if (data.parent === data.id) {
+        throw new HttpException('父分类不能是自己', HttpStatus.BAD_REQUEST);
+      }
+      const parent = await this.repository.findOne({
+        where: { id: data.parent },
+      });
+      await super.update(data.id, { ...omit(data, ['parent']), parent });
+    } else {
+      await super.update(data.id, omit(data, ['parent']));
+    }
+    return await this.detail(data.id);
+  }
+
+  async detail(id: string) {
+    return await super.detail(id, async (qb) =>
       qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
     );
   }
