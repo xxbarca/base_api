@@ -6,7 +6,7 @@ import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 export abstract class BaseService<
   E extends ObjectLiteral,
   R extends BaseRepository<E>,
-  P extends ServiceListQueryOption<E> = ServiceListQueryOption<E>,
+  P extends ServiceListQueryOption = ServiceListQueryOption,
 > {
   protected repository: R;
 
