@@ -3,7 +3,7 @@ import { BasicEntity } from '@/modules/Database/base';
 
 @Entity('banner')
 export class BannerEntity extends BasicEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

@@ -10,6 +10,6 @@ export abstract class BaseRepository<
   }
 
   buildBaseQB(): SelectQueryBuilder<E> {
-    return this.createQueryBuilder(this._qbName);
+    return this.createQueryBuilder(this.qbName);
   }
 }

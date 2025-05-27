@@ -6,9 +6,9 @@ export abstract class BaseService<
   E extends ObjectLiteral,
   R extends BaseRepository<E>,
 > {
-  private repository: R;
+  protected repository: R;
 
-  private constructor(repository: R) {
+  protected constructor(repository: R) {
     this.repository = repository;
   }
 

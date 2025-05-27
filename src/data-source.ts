@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as dotenv from 'dotenv';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { MYSQL } from '@/modules/Mall/ConfigurationModule/constants';
+import { MYSQL } from '@/modules/ConfigurationModule/constants';
 function getEnv(env: string): Record<string, unknown> {
   if (fs.existsSync(env)) {
     return dotenv.parse(fs.readFileSync(env));
