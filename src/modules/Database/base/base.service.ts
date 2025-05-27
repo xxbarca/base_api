@@ -43,4 +43,20 @@ export abstract class BaseService<
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
   }
+
+  async delete(id: string) {
+    const cate = await this.repository.findOne({
+      where: { id: id } as any,
+    });
+    if (!cate) {
+      throw new NotFoundException(
+        `${this.repository.qbName} ${id} not exists!`,
+      );
+    }
+    try {
+      return await this.repository.remove(cate);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

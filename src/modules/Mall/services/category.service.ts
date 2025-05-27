@@ -59,4 +59,8 @@ export class CategoryService extends BaseService<
       qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
     );
   }
+
+  async delete(id: string) {
+    return await super.delete(id);
+  }
 }
