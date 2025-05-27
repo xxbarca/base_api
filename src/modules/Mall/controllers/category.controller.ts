@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -27,5 +28,10 @@ export class CategoryController {
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.delete(id);
+  }
+
+  @Get(':id')
+  async detail(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.detail(id);
   }
 }
