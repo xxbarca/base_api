@@ -9,7 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { CategoryService } from '@/modules/Mall/services';
-import { CreateCategoryDto, UpdateCategoryDto } from '@/modules/Mall/dtos';
+import {
+  CreateCategoryDto,
+  PaginateCategoryDto,
+  UpdateCategoryDto,
+} from '@/modules/Mall/dtos';
 
 @Controller('category')
 export class CategoryController {
@@ -43,5 +47,10 @@ export class CategoryController {
   @Get('/all/list')
   async list() {
     return await this.service.list();
+  }
+
+  @Post('paginate')
+  async paginate(@Body() data: PaginateCategoryDto) {
+    return await this.service.page(data);
   }
 }

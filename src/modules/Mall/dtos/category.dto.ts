@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Min,
   ValidateIf,
 } from 'class-validator';
 import { PartialType, PickType } from '@nestjs/swagger';
@@ -14,6 +15,7 @@ import { OnlineStatus } from '@/modules/Mall/constants';
 import { toNumber } from 'lodash';
 import { IsDataExist, IsUnique } from '@/modules/Database/constraints';
 import { CategoryEntity } from '@/modules/Mall/entities';
+import { PaginateOptions } from '@/modules/Database/types';
 
 export class CommonCategoryDto {
   @IsUnique(CategoryEntity, {
@@ -65,4 +67,21 @@ export class UpdateCategoryDto extends PartialType(CommonCategoryDto) {
   @IsUUID(undefined, { message: '分类id不正确' })
   @IsNotEmpty({ message: 'id不能为空' })
   id: string;
+}
+
+export class PaginateCategoryDto
+  extends PartialType(CommonCategoryDto)
+  implements PaginateOptions
+{
+  @IsNumber()
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '当前页必须大于1' })
+  @IsNotEmpty()
+  page?: number = 1;
+
+  @IsNumber()
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '每页显示数据必须大于10' })
+  @IsNotEmpty()
+  limit?: number = 10;
 }

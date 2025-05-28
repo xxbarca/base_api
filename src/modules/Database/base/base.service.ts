@@ -1,7 +1,14 @@
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { BaseRepository } from '@/modules/Database/base/base.repository';
-import { QueryHook, ServiceListQueryOption } from '@/modules/Database/types';
+import {
+  PaginateOptions,
+  PaginateReturn,
+  QueryHook,
+  ServiceListQueryOption,
+} from '@/modules/Database/types';
 import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { omit } from 'lodash';
+import { paginate } from '@/modules/Database/helpers';
 
 export abstract class BaseService<
   E extends ObjectLiteral,
@@ -80,5 +87,19 @@ export abstract class BaseService<
     );
     qb = qb.where(wheres);
     return callback ? callback(qb) : qb;
+  }
+
+  async page(
+    options?: PaginateOptions & P,
+    callback?: QueryHook<E>,
+  ): Promise<PaginateReturn<E>> {
+    const o = omit(options, ['page', 'limit']);
+    const queryOptions = (o ?? {}) as P;
+    const qb = await this.buildListQB(
+      this.repository.buildBaseQB(),
+      queryOptions,
+      callback,
+    );
+    return paginate(qb, options);
   }
 }
