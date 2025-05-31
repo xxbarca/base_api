@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BaseService } from '@/modules/Database/base';
 import { SkuEntity } from '@/modules/Mall/entities';
 import { SkuRepository, SpuRepository } from '@/modules/Mall/repositories';
-import { CreateSkuDto } from '@/modules/Mall/dtos';
+import { CreateSkuDto, UpdateSkuDto } from '@/modules/Mall/dtos';
+import { omit } from 'lodash';
 
 @Injectable()
 export class SkuService extends BaseService<SkuEntity, SkuRepository> {
@@ -22,5 +23,21 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async updateData(d: UpdateSkuDto) {
+    await super.update(d.id, {
+      ...omit(d, ['spu_id']),
+      spu: this.spuRepository.findOne({
+        where: { id: d.spu_id },
+      }),
+    });
+    return await this.detail(d.id);
+  }
+
+  async detail(id: string) {
+    return await super.detail(id, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu'),
+    );
   }
 }

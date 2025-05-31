@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Patch, Post } from '@nestjs/common';
 import { SkuService } from '@/modules/Mall/services';
-import { CreateSkuDto } from '@/modules/Mall/dtos';
+import { CreateSkuDto, UpdateSkuDto } from '@/modules/Mall/dtos';
 
 @Controller('sku')
 export class SkuController {
@@ -9,5 +9,10 @@ export class SkuController {
   @Post()
   async create(@Body() dto: CreateSkuDto) {
     return await this.service.create(dto);
+  }
+
+  @Patch()
+  async update(@Body() dto: UpdateSkuDto) {
+    return await this.service.updateData(dto);
   }
 }

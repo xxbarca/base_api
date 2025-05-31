@@ -1,4 +1,4 @@
-import { PickType } from '@nestjs/swagger';
+import { PartialType, PickType } from '@nestjs/swagger';
 import { DtoValidation } from '@/modules/Core/decorators';
 import { IsDataExist, IsUnique } from '@/modules/Database/constraints';
 import { SkuEntity, SpuEntity } from '@/modules/Mall/entities';
@@ -70,3 +70,11 @@ export class CreateSkuDto extends PickType(CommonSkuSto, [
   'specs',
   'spu_id',
 ]) {}
+
+@DtoValidation({ groups: ['update'] })
+export class UpdateSkuDto extends PartialType(CommonSkuSto) {
+  @IsDataExist(SkuEntity, { always: true, message: 'SKU不存在' })
+  @IsUUID(undefined, { message: 'Sku id不正确' })
+  @IsNotEmpty({ message: 'id不能为空' })
+  id: string;
+}
