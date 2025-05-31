@@ -1,6 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { BasicEntity } from '@/modules/Database/base';
 import { OnlineStatus } from '@/modules/Mall/constants';
+import { SkuEntity } from '@/modules/Mall/entities/sku.entity';
 
 @Entity('spu')
 export class SpuEntity extends BasicEntity {
@@ -83,4 +85,7 @@ export class SpuEntity extends BasicEntity {
     nullable: true,
   })
   tags: string;
+
+  @OneToMany(() => SkuEntity, (sku) => sku.spu)
+  skus: Relation<SkuEntity>[];
 }
