@@ -9,7 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { SpuService } from '@/modules/Mall/services';
-import { CreateSpuDto, UpdateSpuDto } from '@/modules/Mall/dtos';
+import {
+  CreateSpuDto,
+  PaginateSpuDto,
+  UpdateSpuDto,
+} from '@/modules/Mall/dtos';
 
 @Controller('spu')
 export class SpuController {
@@ -33,5 +37,10 @@ export class SpuController {
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.delete(id);
+  }
+
+  @Post('paginate')
+  async paginate(@Body() data: PaginateSpuDto) {
+    return await this.service.page(data);
   }
 }

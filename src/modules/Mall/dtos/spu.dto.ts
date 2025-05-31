@@ -2,20 +2,25 @@ import { IsDataExist, IsUnique } from '@/modules/Database/constraints';
 import {
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  Min,
   ValidateIf,
 } from 'class-validator';
 import { CategoryEntity, SpuEntity } from '@/modules/Mall/entities';
 import { OnlineStatus } from '@/modules/Mall/constants';
 import { DtoValidation } from '@/modules/Core/decorators';
 import { PartialType, PickType } from '@nestjs/swagger';
+import { PaginateOptions } from '@/modules/Database/types';
+import { toNumber } from 'lodash';
+import { Transform } from 'class-transformer';
 
 class CommonSpuDto {
   @IsUnique(SpuEntity, { groups: ['create'], message: '该SPU已存在' })
   @IsString()
-  @IsOptional({ groups: ['update'] })
+  @IsOptional({ groups: ['update', 'paginate'] })
   title: string;
 
   @IsString()
@@ -26,11 +31,13 @@ class CommonSpuDto {
   @IsDataExist(CategoryEntity, { always: true, message: 'category不存在' })
   @IsUUID(undefined, { always: true, message: 'category_id格式不正确' })
   @IsString()
+  @IsOptional({ groups: ['paginate'] })
   category_id: string;
 
   @IsDataExist(CategoryEntity, { always: true, message: 'root_category不存在' })
   @IsUUID(undefined, { always: true, message: 'root_category_id格式不正确' })
   @IsString()
+  @IsOptional({ groups: ['paginate'] })
   root_category_id: string;
 
   @IsEnum(OnlineStatus, {
@@ -40,7 +47,7 @@ class CommonSpuDto {
   online: OnlineStatus;
 
   @IsString()
-  @IsNotEmpty({ always: true })
+  @IsNotEmpty({ groups: ['create', 'update'] })
   price: string;
 
   @IsOptional({ always: true })
@@ -86,4 +93,22 @@ export class UpdateSpuDto extends PartialType(CommonSpuDto) {
   @IsUUID(undefined, { message: 'Spu id不正确' })
   @IsNotEmpty({ message: 'id不能为空' })
   id: string;
+}
+
+@DtoValidation({ groups: ['paginate'] })
+export class PaginateSpuDto
+  extends PartialType(CommonSpuDto)
+  implements PaginateOptions
+{
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '当前页必须大于1' })
+  @IsNumber()
+  @IsNotEmpty({ always: true })
+  page?: number = 1;
+
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '每页显示数据必须大于10' })
+  @IsNumber()
+  @IsNotEmpty({ always: true })
+  limit?: number = 10;
 }
