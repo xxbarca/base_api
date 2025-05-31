@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -27,5 +28,10 @@ export class SpuController {
   @Get(':id')
   async detail(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.detail(id);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.delete(id);
   }
 }
