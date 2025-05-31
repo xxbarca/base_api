@@ -1,4 +1,12 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { SpuService } from '@/modules/Mall/services';
 import { CreateSpuDto, UpdateSpuDto } from '@/modules/Mall/dtos';
 
@@ -14,5 +22,10 @@ export class SpuController {
   @Patch()
   async update(@Body() dto: UpdateSpuDto) {
     return await this.service.updateData(dto);
+  }
+
+  @Get(':id')
+  async detail(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.detail(id);
   }
 }
