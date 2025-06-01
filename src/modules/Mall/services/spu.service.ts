@@ -23,4 +23,10 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
     await super.update(d.id, omit(d, ['id']));
     return super.detail(d.id);
   }
+
+  async detail(id: string) {
+    return await super.detail(id, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu'),
+    );
+  }
 }
