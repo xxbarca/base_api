@@ -9,7 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { SkuService } from '@/modules/Mall/services';
-import { CreateSkuDto, UpdateSkuDto } from '@/modules/Mall/dtos';
+import {
+  CreateSkuDto,
+  PaginateSkuDto,
+  UpdateSkuDto,
+} from '@/modules/Mall/dtos';
 
 @Controller('sku')
 export class SkuController {
@@ -33,5 +37,10 @@ export class SkuController {
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.delete(id);
+  }
+
+  @Post('paginate')
+  async paginate(@Body() data: PaginateSkuDto) {
+    return await this.service.pageData(data);
   }
 }

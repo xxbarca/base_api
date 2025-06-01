@@ -2,7 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BaseService } from '@/modules/Database/base';
 import { SkuEntity } from '@/modules/Mall/entities';
 import { SkuRepository, SpuRepository } from '@/modules/Mall/repositories';
-import { CreateSkuDto, UpdateSkuDto } from '@/modules/Mall/dtos';
+import {
+  CreateSkuDto,
+  PaginateSkuDto,
+  UpdateSkuDto,
+} from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
 
 @Injectable()
@@ -37,6 +41,12 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
 
   async detail(id: string) {
     return await super.detail(id, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu'),
+    );
+  }
+
+  async pageData(data: PaginateSkuDto) {
+    return await super.page(data, async (qb) =>
       qb.leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu'),
     );
   }

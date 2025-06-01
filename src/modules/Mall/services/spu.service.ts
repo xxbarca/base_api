@@ -2,7 +2,11 @@ import { BaseService } from '@/modules/Database/base';
 import { SpuEntity } from '@/modules/Mall/entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SpuRepository } from '@/modules/Mall/repositories';
-import { CreateSpuDto, UpdateSpuDto } from '@/modules/Mall/dtos';
+import {
+  CreateSpuDto,
+  PaginateSpuDto,
+  UpdateSpuDto,
+} from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
 
 @Injectable()
@@ -28,5 +32,9 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
     return await super.detail(id, async (qb) =>
       qb.leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu'),
     );
+  }
+
+  async pageData(data: PaginateSpuDto) {
+    return await super.page(data);
   }
 }

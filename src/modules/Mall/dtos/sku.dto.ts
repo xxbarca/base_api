@@ -9,8 +9,12 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Min,
 } from 'class-validator';
 import { OnlineStatus } from '@/modules/Mall/constants';
+import { PaginateOptions } from '@/modules/Database/types';
+import { Transform } from 'class-transformer';
+import { toNumber } from 'lodash';
 
 export interface Spec {
   key: string;
@@ -26,7 +30,7 @@ class CommonSkuSto {
   spu_id: string;
 
   @IsUnique(SkuEntity, { groups: ['create'], message: '该SKU已存在' })
-  @IsString({ always: true })
+  @IsString()
   @IsNotEmpty({ groups: ['create'], message: 'title不能为空' })
   @IsOptional({ groups: ['update'] })
   title: string;
@@ -77,4 +81,22 @@ export class UpdateSkuDto extends PartialType(CommonSkuSto) {
   @IsUUID(undefined, { message: 'Sku id不正确' })
   @IsNotEmpty({ message: 'id不能为空' })
   id: string;
+}
+
+@DtoValidation({ groups: ['paginate'] })
+export class PaginateSkuDto
+  extends PartialType(CommonSkuSto)
+  implements PaginateOptions
+{
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '当前页必须大于1' })
+  @IsNumber()
+  @IsNotEmpty({ always: true })
+  page?: number = 1;
+
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '每页显示数据必须大于10' })
+  @IsNumber()
+  @IsNotEmpty({ always: true })
+  limit?: number = 10;
 }

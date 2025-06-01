@@ -41,6 +41,6 @@ export class SpuController {
 
   @Post('paginate')
   async paginate(@Body() data: PaginateSpuDto) {
-    return await this.service.page(data);
+    return await this.service.pageData(data);
   }
 }
