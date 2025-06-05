@@ -7,9 +7,16 @@ import { ConfigurationModule } from '@/modules/ConfigurationModule/configuration
 import { CoreModule } from '@/modules/Core/core.module';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { AppFilter, AppPipe } from '@/modules/Core/providers';
+import { AuthModule } from '@/modules/Auth/auth.module';
 
 @Module({
-  imports: [ConfigurationModule, DatabaseModule, MallModule, CoreModule],
+  imports: [
+    ConfigurationModule,
+    DatabaseModule,
+    MallModule,
+    CoreModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
