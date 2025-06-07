@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BasicEntity } from '@/modules/Database/base';
 import * as argon2 from 'argon2';
+import { Exclude } from 'class-transformer';
 
 @Entity('user')
 export class UserEntity extends BasicEntity {
@@ -18,6 +19,7 @@ export class UserEntity extends BasicEntity {
     comment: '密码',
     nullable: false,
   })
+  @Exclude()
   password: string;
 
   @Column({
