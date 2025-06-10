@@ -17,4 +17,10 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
     });
     return await this.userRepository.save(u);
   }
+
+  async findByName(name: string) {
+    return await this.userRepository.findOne({
+      where: { username: name },
+    });
+  }
 }

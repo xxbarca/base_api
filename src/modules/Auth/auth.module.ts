@@ -5,6 +5,7 @@ import * as controllers from '@/modules/Auth/controllers';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ENV_JWT } from '@/modules/ConfigurationModule/constants';
+import * as strategies from '@/modules/Auth/strategies';
 
 @Module({
   imports: [
@@ -22,6 +23,10 @@ import { ENV_JWT } from '@/modules/ConfigurationModule/constants';
     }),
   ],
   controllers: [...Object.values(controllers)],
-  providers: [...Object.values(services), ...Object.values(repositories)],
+  providers: [
+    ...Object.values(services),
+    ...Object.values(repositories),
+    ...Object.values(strategies),
+  ],
 })
 export class AuthModule {}
