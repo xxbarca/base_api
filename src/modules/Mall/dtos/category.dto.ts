@@ -24,7 +24,7 @@ export class CommonCategoryDto {
   })
   @IsString({ always: true })
   @IsNotEmpty({ groups: ['create'] })
-  @IsOptional({ groups: ['update'] })
+  @IsOptional({ groups: ['update', 'paginate'] })
   name: string;
 
   @IsString({ always: true })
@@ -41,7 +41,7 @@ export class CommonCategoryDto {
   img: string;
 
   @IsEnum(OnlineStatus, { always: true, message: '无效的状态信息' })
-  @IsOptional({ groups: ['update'] })
+  @IsOptional({ groups: ['update', 'paginate'] })
   online: OnlineStatus;
 
   @IsDataExist(CategoryEntity, { always: true, message: '父分类不存在' })
@@ -69,6 +69,7 @@ export class UpdateCategoryDto extends PartialType(CommonCategoryDto) {
   id: string;
 }
 
+@DtoValidation({ groups: ['paginate'] })
 export class PaginateCategoryDto
   extends PartialType(CommonCategoryDto)
   implements PaginateOptions
@@ -76,12 +77,12 @@ export class PaginateCategoryDto
   @IsNumber()
   @Transform(({ value }) => toNumber(value))
   @Min(1, { message: '当前页必须大于1' })
-  @IsNotEmpty()
+  @IsNotEmpty({ always: true })
   page?: number = 1;
 
   @IsNumber()
   @Transform(({ value }) => toNumber(value))
   @Min(1, { message: '每页显示数据必须大于10' })
-  @IsNotEmpty()
+  @IsNotEmpty({ always: true })
   limit?: number = 10;
 }
