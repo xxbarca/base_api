@@ -31,7 +31,7 @@ export class MenuService extends BaseService<MenuEntity, MenuRepository> {
           {
             icon: 'ShoppingOutlined',
             title: 'SKU列表',
-            path: '/sku/index',
+            path: '/sku/list',
           },
         ],
       },
