@@ -25,13 +25,13 @@ export class MenuService extends BaseService<MenuEntity, MenuRepository> {
       },
       {
         icon: 'ShoppingOutlined',
-        title: 'SKU管理',
-        path: '/sku',
+        title: 'SPU管理',
+        path: '/spu',
         children: [
           {
             icon: 'ShoppingOutlined',
-            title: 'SKU列表',
-            path: '/sku',
+            title: 'SPU列表',
+            path: '/spu',
           },
         ],
       },
