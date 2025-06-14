@@ -51,6 +51,6 @@ export class CategoryController {
 
   @Post('paginate')
   async paginate(@Body() data: PaginateCategoryDto) {
-    return await this.service.page(data);
+    return await this.service.paginate(data);
   }
 }

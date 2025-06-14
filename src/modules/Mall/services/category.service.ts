@@ -7,7 +7,11 @@ import {
 import { BaseService } from '@/modules/Database/base';
 import { CategoryEntity } from '@/modules/Mall/entities';
 import { CategoryRepository } from '@/modules/Mall/repositories';
-import { CreateCategoryDto, UpdateCategoryDto } from '@/modules/Mall/dtos';
+import {
+  CreateCategoryDto,
+  PaginateCategoryDto,
+  UpdateCategoryDto,
+} from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
 import { OnlineStatus } from '@/modules/Mall/constants';
 
@@ -91,5 +95,11 @@ export class CategoryService extends BaseService<
       console.log(e);
       throw new HttpException('修改状态失败', HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async paginate(data: PaginateCategoryDto) {
+    return await super.page(data, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
+    );
   }
 }
