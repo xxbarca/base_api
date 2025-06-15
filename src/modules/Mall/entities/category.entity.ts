@@ -9,6 +9,7 @@ import {
 import type { Relation } from 'typeorm';
 import { BasicEntity } from '@/modules/Database/base';
 import { OnlineStatus } from '@/modules/Mall/constants';
+import { SpuEntity } from '@/modules/Mall/entities/spu.entity';
 
 @Entity('category')
 export class CategoryEntity extends BasicEntity {
@@ -47,6 +48,9 @@ export class CategoryEntity extends BasicEntity {
     default: OnlineStatus.ONLINE,
   })
   online: OnlineStatus;
+
+  @OneToMany(() => SpuEntity, (spu) => spu.category)
+  spus: Relation<SpuEntity>[];
 
   @OneToMany(() => CategoryEntity, (cate) => cate.parent)
   children: Relation<CategoryEntity>[];

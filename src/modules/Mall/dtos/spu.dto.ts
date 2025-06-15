@@ -32,7 +32,7 @@ class CommonSpuDto {
   @IsUUID(undefined, { always: true, message: 'category_id格式不正确' })
   @IsString()
   @IsOptional({ groups: ['paginate'] })
-  category_id: string;
+  category: string;
 
   @IsDataExist(CategoryEntity, { always: true, message: 'root_category不存在' })
   @IsUUID(undefined, { always: true, message: 'root_category_id格式不正确' })
@@ -76,7 +76,7 @@ class CommonSpuDto {
 export class CreateSpuDto extends PickType(CommonSpuDto, [
   'title',
   'subtitle',
-  'category_id',
+  'category',
   'root_category_id',
   'online',
   'price',

@@ -1,7 +1,7 @@
 import { BaseService } from '@/modules/Database/base';
 import { SpuEntity } from '@/modules/Mall/entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { SpuRepository } from '@/modules/Mall/repositories';
+import { CategoryRepository, SpuRepository } from '@/modules/Mall/repositories';
 import {
   CreateSpuDto,
   PaginateSpuDto,
@@ -11,13 +11,21 @@ import { omit } from 'lodash';
 
 @Injectable()
 export class SpuService extends BaseService<SpuEntity, SpuRepository> {
-  constructor(protected repository: SpuRepository) {
+  constructor(
+    protected repository: SpuRepository,
+    protected readonly categoryRepository: CategoryRepository,
+  ) {
     super(repository);
   }
 
   async create(data: CreateSpuDto) {
     try {
-      return await this.repository.save(data);
+      return await this.repository.save({
+        ...data,
+        category: await this.categoryRepository.findOne({
+          where: { id: data.category },
+        }),
+      });
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
@@ -35,6 +43,8 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
   }
 
   async pageData(data: PaginateSpuDto) {
-    return await super.page(data);
+    return await super.page(data, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.category`, 'category'),
+    );
   }
 }

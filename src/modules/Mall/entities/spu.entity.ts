@@ -1,8 +1,9 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import type { Relation } from 'typeorm';
 import { BasicEntity } from '@/modules/Database/base';
 import { OnlineStatus } from '@/modules/Mall/constants';
 import { SkuEntity } from '@/modules/Mall/entities/sku.entity';
+import { CategoryEntity } from '@/modules/Mall/entities/category.entity';
 
 @Entity('spu')
 export class SpuEntity extends BasicEntity {
@@ -21,10 +22,11 @@ export class SpuEntity extends BasicEntity {
   })
   subtitle: string;
 
-  @Column({
-    nullable: false,
+  @ManyToOne(() => CategoryEntity, (category) => category.spus, {
+    onDelete: 'SET NULL',
   })
-  category_id: string;
+  @JoinColumn({ name: 'category_id' })
+  category: Relation<CategoryEntity>;
 
   @Column({
     nullable: true,
