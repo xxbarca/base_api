@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseUUIDPipe,
   Post,
@@ -34,5 +35,10 @@ export class SpecController {
   @Delete('value/:id')
   async deleteValue(@Param('id', ParseUUIDPipe) id: string) {
     return await this.valueService.delete(id);
+  }
+
+  @Get('key/list')
+  async specKeyList() {
+    return await this.keyService.list();
   }
 }
