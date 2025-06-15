@@ -46,7 +46,7 @@ export class CategoryController {
 
   @Get('/all/list')
   async list() {
-    return await this.service.list();
+    return await this.service.all();
   }
 
   @Post('paginate')

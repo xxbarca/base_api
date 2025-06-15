@@ -102,4 +102,10 @@ export class CategoryService extends BaseService<
       qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
     );
   }
+
+  async all() {
+    return await super.list(null, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
+    );
+  }
 }
