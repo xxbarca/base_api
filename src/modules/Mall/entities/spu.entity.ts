@@ -1,9 +1,18 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import type { Relation } from 'typeorm';
 import { BasicEntity } from '@/modules/Database/base';
 import { OnlineStatus } from '@/modules/Mall/constants';
 import { SkuEntity } from '@/modules/Mall/entities/sku.entity';
 import { CategoryEntity } from '@/modules/Mall/entities/category.entity';
+import { SpecKeyEntity } from '@/modules/Mall/entities/spec.key.entity';
 
 @Entity('spu')
 export class SpuEntity extends BasicEntity {
@@ -90,4 +99,18 @@ export class SpuEntity extends BasicEntity {
 
   @OneToMany(() => SkuEntity, (sku) => sku.spu)
   skus: Relation<SkuEntity>[];
+
+  @ManyToMany(() => SpecKeyEntity, (specKey) => specKey.spus)
+  @JoinTable({
+    name: 'spu_key',
+    joinColumn: {
+      name: 'spu_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'spec_key_id',
+      referencedColumnName: 'id',
+    },
+  })
+  specKeys: Relation<SpecKeyEntity>[];
 }

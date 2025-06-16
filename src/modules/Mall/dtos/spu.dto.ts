@@ -70,6 +70,9 @@ class CommonSpuDto {
   @IsString()
   @IsOptional({ always: true })
   tags: string;
+
+  @IsNotEmpty({ groups: ['create'], each: true })
+  spec_key_list: string[];
 }
 
 @DtoValidation({ groups: ['create'] })
@@ -86,6 +89,7 @@ export class CreateSpuDto extends PickType(CommonSpuDto, [
   'discount_price',
   'description',
   'tags',
+  'spec_key_list',
 ]) {}
 
 export class UpdateSpuDto extends PartialType(CommonSpuDto) {
