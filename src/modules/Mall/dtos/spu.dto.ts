@@ -31,7 +31,7 @@ class CommonSpuDto {
   @IsDataExist(CategoryEntity, { always: true, message: 'category不存在' })
   @IsUUID(undefined, { always: true, message: 'category_id格式不正确' })
   @IsString()
-  @IsOptional({ groups: ['paginate'] })
+  @IsOptional({ groups: ['paginate', 'update'] })
   category: string;
 
   @IsDataExist(CategoryEntity, { always: true, message: 'root_category不存在' })
@@ -72,6 +72,7 @@ class CommonSpuDto {
   tags: string;
 
   @IsNotEmpty({ groups: ['create'], each: true })
+  @IsOptional({ groups: ['update'], each: true })
   spec_key_list: string[];
 }
 
@@ -92,6 +93,7 @@ export class CreateSpuDto extends PickType(CommonSpuDto, [
   'spec_key_list',
 ]) {}
 
+@DtoValidation({ groups: ['update'] })
 export class UpdateSpuDto extends PartialType(CommonSpuDto) {
   @IsDataExist(SpuEntity, { always: true, message: 'SPU不存在' })
   @IsUUID(undefined, { message: 'Spu id不正确' })

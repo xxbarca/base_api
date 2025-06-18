@@ -44,13 +44,32 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
   }
 
   async updateData(d: UpdateSpuDto) {
-    await super.update(d.id, omit(d, ['id']));
-    return super.detail(d.id);
+    let spu = this.repository.create(omit(d, ['category', 'spec_key_list']));
+    if (d.category) {
+      spu.category = await this.categoryRepository.findOne({
+        where: {
+          id: d.category,
+        },
+      });
+    }
+    if (d.spec_key_list) {
+      spu.specKeys = await this.keyRepository.findBy({
+        id: In(d.spec_key_list),
+      });
+    }
+    await this.repository.save(spu);
+    spu = await this.detail(d.id);
+    await this.repository
+      .buildBaseQB()
+      .relation(SpuEntity, 'specKeys')
+      .of(d.id)
+      .addAndRemove(d.spec_key_list, spu.specKeys);
+    return spu;
   }
 
   async detail(id: string) {
     return await super.detail(id, async (qb) =>
-      qb.leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu'),
+      qb.leftJoinAndSelect(`${this.repository.qbName}.specKeys`, 'specKeys'),
     );
   }
 
