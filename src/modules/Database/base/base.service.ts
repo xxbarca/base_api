@@ -7,7 +7,7 @@ import {
   ServiceListQueryOption,
 } from '@/modules/Database/types';
 import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
-import { omit } from 'lodash';
+import { omit, omitBy } from 'lodash';
 import { paginate } from '@/modules/Database/helpers';
 
 export abstract class BaseService<
@@ -82,6 +82,14 @@ export abstract class BaseService<
     options?: P,
     callback?: QueryHook<E>,
   ) {
+    options = omitBy(
+      options,
+      (value) =>
+        value === null ||
+        value === undefined ||
+        value === '' ||
+        Number.isNaN(value),
+    ) as P;
     const wheres = Object.fromEntries(
       Object.entries(options || {}).map(([key, value]) => [key, value]),
     );
