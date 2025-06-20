@@ -81,7 +81,6 @@ export class CreateSpuDto extends PickType(CommonSpuDto, [
   'title',
   'subtitle',
   'category',
-  'root_category_id',
   'online',
   'price',
   'sketch_spec_id',
