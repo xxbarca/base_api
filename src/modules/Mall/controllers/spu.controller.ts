@@ -43,4 +43,9 @@ export class SpuController {
   async paginate(@Body() data: PaginateSpuDto) {
     return await this.service.pageData(data);
   }
+
+  @Patch('switchStatus/:id')
+  async switchStatus(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.switchStatus(id);
+  }
 }

@@ -13,6 +13,7 @@ import {
   UpdateSpuDto,
 } from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
+import { OnlineStatus } from '@/modules/Mall/constants';
 
 @Injectable()
 export class SpuService extends BaseService<SpuEntity, SpuRepository> {
@@ -77,5 +78,22 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
     return await super.page(data, async (qb) =>
       qb.leftJoinAndSelect(`${this.repository.qbName}.category`, 'category'),
     );
+  }
+
+  async switchStatus(id: string) {
+    const spu = await this.repository.findOne({
+      where: { id: id },
+    });
+    const status =
+      spu.online === OnlineStatus.ONLINE
+        ? OnlineStatus.OFFLINE
+        : OnlineStatus.ONLINE;
+    try {
+      await this.repository.update(id, { online: status });
+      return '修改状态成功';
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('修改状态失败', HttpStatus.BAD_REQUEST);
+    }
   }
 }
