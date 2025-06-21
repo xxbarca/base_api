@@ -100,8 +100,6 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
   }
 
   async all() {
-    return await super.list(null, async (qb) =>
-      qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
-    );
+    return await super.list();
   }
 }
