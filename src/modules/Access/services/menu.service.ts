@@ -31,34 +31,7 @@ export class MenuService extends BaseService<MenuEntity, MenuRepository> {
           {
             icon: 'ShoppingOutlined',
             title: 'SPU列表',
-            path: '/spu',
-          },
-        ],
-      },
-      {
-        icon: 'ShoppingOutlined',
-        title: '常用组件',
-        path: '/assembly',
-        children: [
-          {
-            icon: 'AppstoreOutlined',
-            path: '/assembly/guide',
-            title: '引导页',
-          },
-          {
-            icon: 'AppstoreOutlined',
-            path: '/assembly/svgIcon',
-            title: 'Svg 图标',
-          },
-          {
-            icon: 'AppstoreOutlined',
-            path: '/assembly/selectIcon',
-            title: 'Icon 选择',
-          },
-          {
-            icon: 'AppstoreOutlined',
-            path: '/assembly/batchImport',
-            title: '批量导入数据',
+            path: '/spu/index',
           },
         ],
       },
