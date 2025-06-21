@@ -32,7 +32,7 @@ class CommonSkuSto {
   @IsUnique(SkuEntity, { groups: ['create'], message: '该SKU已存在' })
   @IsString()
   @IsNotEmpty({ groups: ['create'], message: 'title不能为空' })
-  @IsOptional({ groups: ['update'] })
+  @IsOptional({ groups: ['update', 'paginate'] })
   title: string;
 
   @IsNotEmpty({ groups: ['create'], message: 'price不能为空' })
@@ -46,7 +46,7 @@ class CommonSkuSto {
 
   @IsEnum(OnlineStatus)
   @IsNotEmpty({ groups: ['create'] })
-  @IsOptional({ groups: ['update'] })
+  @IsOptional({ groups: ['update', 'paginate'] })
   online: OnlineStatus;
 
   @IsString()
