@@ -21,7 +21,7 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
   async create(data: CreateSkuDto) {
     try {
       const spu = await this.spuRepository.findOne({
-        where: { id: data.spu_id },
+        where: { id: data.spu },
       });
       return this.repository.save({ ...data, spu });
     } catch (e) {
@@ -33,7 +33,7 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
     await super.update(d.id, {
       ...omit(d, ['spu_id']),
       spu: this.spuRepository.findOne({
-        where: { id: d.spu_id },
+        where: { id: d.spu },
       }),
     });
     return await this.detail(d.id);

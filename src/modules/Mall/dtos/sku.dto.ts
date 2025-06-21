@@ -27,7 +27,7 @@ class CommonSkuSto {
   @IsDataExist(SpuEntity, { always: true, message: 'spu不存在' })
   @IsUUID(undefined, { groups: ['create'], message: 'spu_id格式不正确' })
   @IsOptional({ groups: ['update'] })
-  spu_id: string;
+  spu: string;
 
   @IsUnique(SkuEntity, { groups: ['create'], message: '该SKU已存在' })
   @IsString()
@@ -72,7 +72,7 @@ export class CreateSkuDto extends PickType(CommonSkuSto, [
   'img',
   'stock',
   'specs',
-  'spu_id',
+  'spu',
 ]) {}
 
 @DtoValidation({ groups: ['update'] })
