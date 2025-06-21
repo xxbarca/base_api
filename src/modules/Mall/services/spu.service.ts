@@ -98,4 +98,10 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
       throw new HttpException('修改状态失败', HttpStatus.BAD_REQUEST);
     }
   }
+
+  async all() {
+    return await super.list(null, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.parent`, 'parent'),
+    );
+  }
 }
