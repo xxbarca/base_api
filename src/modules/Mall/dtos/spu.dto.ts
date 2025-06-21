@@ -37,7 +37,7 @@ class CommonSpuDto {
   @IsDataExist(CategoryEntity, { always: true, message: 'root_category不存在' })
   @IsUUID(undefined, { always: true, message: 'root_category_id格式不正确' })
   @IsString()
-  @IsOptional({ groups: ['paginate'] })
+  @IsOptional({ groups: ['paginate', 'update'] })
   root_category_id: string;
 
   @IsEnum(OnlineStatus, {
