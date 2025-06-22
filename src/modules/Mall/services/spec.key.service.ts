@@ -24,4 +24,10 @@ export class SpecKeyService extends BaseService<
   async delete(id: string) {
     return await super.delete(id);
   }
+
+  async detail(id: string) {
+    return await super.detail(id, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.values`, 'values'),
+    );
+  }
 }

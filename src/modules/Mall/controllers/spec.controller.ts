@@ -32,6 +32,11 @@ export class SpecController {
     return await this.keyService.delete(id);
   }
 
+  @Get('key/detail/:id')
+  async keyDetail(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.keyService.detail(id);
+  }
+
   @Delete('value/:id')
   async deleteValue(@Param('id', ParseUUIDPipe) id: string) {
     return await this.valueService.delete(id);
