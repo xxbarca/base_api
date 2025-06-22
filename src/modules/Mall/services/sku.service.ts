@@ -49,7 +49,8 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
     return await super.page(data, async (qb) =>
       qb
         .leftJoinAndSelect(`${this.repository.qbName}.spu`, 'spu')
-        .leftJoinAndSelect('spu.specKeys', 'specKeys'),
+        .leftJoinAndSelect('spu.specKeys', 'specKeys')
+        .leftJoinAndSelect('specKeys.values', 'values'),
     );
   }
 }
