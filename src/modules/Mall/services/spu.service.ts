@@ -101,7 +101,9 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
 
   async all() {
     return await super.list(null, async (qb) =>
-      qb.leftJoinAndSelect(`${this.repository.qbName}.specKeys`, 'specKeys'),
+      qb
+        .leftJoinAndSelect(`${this.repository.qbName}.specKeys`, 'specKeys')
+        .leftJoinAndSelect('specKeys.values', 'values'),
     );
   }
 }
