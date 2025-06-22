@@ -78,7 +78,8 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
     return await super.page(data, async (qb) =>
       qb
         .leftJoinAndSelect(`${this.repository.qbName}.category`, 'category')
-        .leftJoinAndSelect(`${this.repository.qbName}.specKeys`, 'specKeys'),
+        .leftJoinAndSelect(`${this.repository.qbName}.specKeys`, 'specKeys')
+        .leftJoinAndSelect('specKeys.values', 'values'),
     );
   }
 
