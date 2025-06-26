@@ -9,7 +9,7 @@ import {
   Min,
   ValidateIf,
 } from 'class-validator';
-import { CategoryEntity, SpuEntity } from '@/modules/Mall/entities';
+import { CategoryEntity, SkuEntity, SpuEntity } from '@/modules/Mall/entities';
 import { OnlineStatus } from '@/modules/Mall/constants';
 import { DtoValidation } from '@/modules/Core/decorators';
 import { PartialType, PickType } from '@nestjs/swagger';
@@ -116,4 +116,18 @@ export class PaginateSpuDto
   @IsNumber()
   @IsNotEmpty({ always: true })
   limit?: number = 10;
+}
+
+export class SetDefaultSkuDto {
+  @IsDataExist(SpuEntity, { always: true, message: 'spu不存在' })
+  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsDataExist(SkuEntity, { always: true, message: 'spu不存在' })
+  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
+  sku_id: string;
 }

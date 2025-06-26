@@ -12,6 +12,7 @@ import { SpuService } from '@/modules/Mall/services';
 import {
   CreateSpuDto,
   PaginateSpuDto,
+  SetDefaultSkuDto,
   UpdateSpuDto,
 } from '@/modules/Mall/dtos';
 
@@ -52,5 +53,10 @@ export class SpuController {
   @Get('/all/list')
   async list() {
     return await this.service.all();
+  }
+
+  @Post('setDefaultSku')
+  async setDefaultSku(@Body() data: SetDefaultSkuDto) {
+    return await this.service.setDefaultSku(data);
   }
 }

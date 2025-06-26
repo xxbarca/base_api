@@ -4,12 +4,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
 import {
   CategoryRepository,
+  SkuRepository,
   SpecKeyRepository,
   SpuRepository,
 } from '@/modules/Mall/repositories';
 import {
   CreateSpuDto,
   PaginateSpuDto,
+  SetDefaultSkuDto,
   UpdateSpuDto,
 } from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
@@ -21,6 +23,7 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
     protected repository: SpuRepository,
     protected readonly categoryRepository: CategoryRepository,
     protected readonly keyRepository: SpecKeyRepository,
+    protected readonly skuRepository: SkuRepository,
   ) {
     super(repository);
   }
@@ -106,5 +109,15 @@ export class SpuService extends BaseService<SpuEntity, SpuRepository> {
         .leftJoinAndSelect(`${this.repository.qbName}.specKeys`, 'specKeys')
         .leftJoinAndSelect('specKeys.values', 'values'),
     );
+  }
+
+  async setDefaultSku(data: SetDefaultSkuDto) {
+    try {
+      await this.repository.update(data.id, { default_sku_id: data.sku_id });
+      return '设置默认SKU成功';
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('设置默认SKU失败', HttpStatus.BAD_REQUEST);
+    }
   }
 }
