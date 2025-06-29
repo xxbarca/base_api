@@ -31,7 +31,7 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
 
   async updateData(d: UpdateSkuDto) {
     await super.update(d.id, {
-      ...omit(d, ['spu_id']),
+      ...omit(d, ['spu']),
       spu: this.spuRepository.findOne({
         where: { id: d.spu },
       }),
