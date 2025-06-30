@@ -53,4 +53,12 @@ export class SkuService extends BaseService<SkuEntity, SkuRepository> {
         .leftJoinAndSelect('specKeys.values', 'values'),
     );
   }
+
+  async listWithSpu(id: string) {
+    return await this.repository.find({
+      where: {
+        spu: { id },
+      },
+    });
+  }
 }

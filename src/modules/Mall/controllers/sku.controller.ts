@@ -43,4 +43,9 @@ export class SkuController {
   async paginate(@Body() data: PaginateSkuDto) {
     return await this.service.pageData(data);
   }
+
+  @Get('/listWithSpu/:id')
+  async listWithSpu(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.listWithSpu(id);
+  }
 }
