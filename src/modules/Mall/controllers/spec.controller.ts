@@ -8,7 +8,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { SpecKeyService, SpecValueService } from '@/modules/Mall/services';
-import { CreateSpecKeyDto, CreateSpecValueDto } from '@/modules/Mall/dtos';
+import {
+  CreateSpecKeyDto,
+  CreateSpecValueDto,
+  PaginateKeyDto,
+} from '@/modules/Mall/dtos';
 
 @Controller('spec')
 export class SpecController {
@@ -45,5 +49,10 @@ export class SpecController {
   @Get('key/list')
   async specKeyList() {
     return await this.keyService.list();
+  }
+
+  @Post('paginate/key')
+  async paginateKey(@Body() data: PaginateKeyDto) {
+    return await this.keyService.page(data);
   }
 }
