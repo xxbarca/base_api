@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { SpecKeyService, SpecValueService } from '@/modules/Mall/services';
@@ -12,7 +13,9 @@ import {
   CreateSpecKeyDto,
   CreateSpecValueDto,
   PaginateKeyDto,
+  UpdateSpecKeyDto,
 } from '@/modules/Mall/dtos';
+import { omit } from 'lodash';
 
 @Controller('spec')
 export class SpecController {
@@ -24,6 +27,11 @@ export class SpecController {
   @Post('key')
   async createKey(@Body() data: CreateSpecKeyDto) {
     return await this.keyService.create(data);
+  }
+
+  @Patch('/key/update')
+  async updateKey(@Body() data: UpdateSpecKeyDto) {
+    return await this.keyService.update(data.id, omit(data, ['id']));
   }
 
   @Post('value')

@@ -44,6 +44,13 @@ export class CreateSpecKeyDto extends PickType(CommonSpecKeyDto, [
   'unit',
 ]) {}
 
+@DtoValidation({ groups: ['update'] })
+export class UpdateSpecKeyDto extends PartialType(CommonSpecKeyDto) {
+  @IsDataExist(SpecKeyEntity, { always: true, message: '规格名不存在' })
+  @IsNotEmpty({ message: 'id不能为空' })
+  id: string;
+}
+
 @DtoValidation({ groups: ['create'] })
 export class CreateSpecValueDto extends PickType(CommonSpecValueDto, [
   'value',
