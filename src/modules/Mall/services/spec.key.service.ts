@@ -1,7 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BaseService } from '@/modules/Database/base';
 import { SpecKeyEntity } from '@/modules/Mall/entities';
-import { SpecKeyRepository } from '@/modules/Mall/repositories';
+import {
+  SpecKeyRepository,
+  SpecValueRepository,
+} from '@/modules/Mall/repositories';
 import { CreateSpecKeyDto } from '@/modules/Mall/dtos';
 
 @Injectable()
@@ -9,7 +12,10 @@ export class SpecKeyService extends BaseService<
   SpecKeyEntity,
   SpecKeyRepository
 > {
-  constructor(protected repository: SpecKeyRepository) {
+  constructor(
+    protected repository: SpecKeyRepository,
+    protected valueRepository: SpecValueRepository,
+  ) {
     super(repository);
   }
 
@@ -22,6 +28,12 @@ export class SpecKeyService extends BaseService<
   }
 
   async delete(id: string) {
+    const values = await this.valueRepository.find({
+      where: {
+        key: { id },
+      },
+    });
+    await this.valueRepository.delete(values.map((i) => i.id));
     return await super.delete(id);
   }
 
