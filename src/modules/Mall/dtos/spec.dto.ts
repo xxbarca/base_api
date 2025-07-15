@@ -74,3 +74,21 @@ export class PaginateKeyDto
   @IsNotEmpty({ always: true })
   limit?: number = 10;
 }
+
+@DtoValidation({ groups: ['paginate'] })
+export class PaginateValueDto
+  extends PartialType(CommonSpecValueDto)
+  implements PaginateOptions
+{
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '当前页必须大于1' })
+  @IsNumber()
+  @IsNotEmpty({ always: true })
+  page?: number = 1;
+
+  @Transform(({ value }) => toNumber(value))
+  @Min(1, { message: '每页显示数据必须大于10' })
+  @IsNumber()
+  @IsNotEmpty({ always: true })
+  limit?: number = 10;
+}

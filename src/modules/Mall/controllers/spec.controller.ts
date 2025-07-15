@@ -13,6 +13,7 @@ import {
   CreateSpecKeyDto,
   CreateSpecValueDto,
   PaginateKeyDto,
+  PaginateValueDto,
   UpdateSpecKeyDto,
 } from '@/modules/Mall/dtos';
 import { omit } from 'lodash';
@@ -62,5 +63,10 @@ export class SpecController {
   @Post('paginate/key')
   async paginateKey(@Body() data: PaginateKeyDto) {
     return await this.keyService.page(data);
+  }
+
+  @Post('paginate/value')
+  async paginateValue(@Body() data: PaginateValueDto) {
+    return await this.valueService.page(data);
   }
 }
