@@ -27,7 +27,7 @@ class CommonSpecKeyDto {
 }
 
 class CommonSpecValueDto {
-  @IsUnique(SpecValueEntity, { always: true, message: '该VALUE已经存在' })
+  @IsUnique(SpecValueEntity, { groups: ['create'], message: '该VALUE已经存在' })
   @IsString()
   @IsNotEmpty()
   @IsOptional({ groups: ['paginate', 'update'] })
