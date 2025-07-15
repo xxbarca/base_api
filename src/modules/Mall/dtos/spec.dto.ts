@@ -30,11 +30,13 @@ class CommonSpecValueDto {
   @IsUnique(SpecValueEntity, { always: true, message: '该VALUE已经存在' })
   @IsString()
   @IsNotEmpty()
+  @IsOptional({ groups: ['paginate', 'update'] })
   value: string;
 
   @IsDataExist(SpecKeyEntity, { always: true, message: '该spec_key_id不存在' })
   @IsUUID()
   @IsNotEmpty()
+  @IsOptional({ groups: ['paginate', 'update'] })
   key_id: string;
 }
 
