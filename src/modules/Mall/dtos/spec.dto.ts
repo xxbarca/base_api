@@ -37,7 +37,7 @@ class CommonSpecValueDto {
   @IsUUID()
   @IsNotEmpty()
   @IsOptional({ groups: ['paginate', 'update'] })
-  key_id: string;
+  key: string;
 }
 
 @DtoValidation({ groups: ['create'] })
@@ -56,7 +56,7 @@ export class UpdateSpecKeyDto extends PartialType(CommonSpecKeyDto) {
 @DtoValidation({ groups: ['create'] })
 export class CreateSpecValueDto extends PickType(CommonSpecValueDto, [
   'value',
-  'key_id',
+  'key',
 ]) {}
 
 @DtoValidation({ groups: ['paginate'] })

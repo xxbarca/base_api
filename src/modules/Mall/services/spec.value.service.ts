@@ -5,7 +5,7 @@ import {
   SpecKeyRepository,
   SpecValueRepository,
 } from '@/modules/Mall/repositories';
-import { CreateSpecValueDto } from '@/modules/Mall/dtos';
+import { CreateSpecValueDto, PaginateValueDto } from '@/modules/Mall/dtos';
 
 @Injectable()
 export class SpecValueService extends BaseService<
@@ -23,12 +23,20 @@ export class SpecValueService extends BaseService<
     try {
       const key = await this.keyRepository.findOne({
         where: {
-          id: data.key_id,
+          id: data.key,
         },
       });
       return await this.repository.save({ ...data, key });
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async pageData(data: PaginateValueDto) {
+    return await super.page(data, async (qb) =>
+      qb
+        .leftJoinAndSelect(`${this.repository.qbName}.key`, 'key')
+        .where('key.id = :id', { id: data.key }),
+    );
   }
 }

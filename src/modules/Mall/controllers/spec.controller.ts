@@ -67,6 +67,6 @@ export class SpecController {
 
   @Post('paginate/value')
   async paginateValue(@Body() data: PaginateValueDto) {
-    return await this.valueService.page(data);
+    return await this.valueService.pageData(data);
   }
 }
