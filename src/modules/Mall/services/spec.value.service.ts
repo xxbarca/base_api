@@ -33,6 +33,8 @@ export class SpecValueService extends BaseService<
   }
 
   async pageData(data: PaginateValueDto) {
-    return await super.page(data);
+    return await super.page(data, async (qb) =>
+      qb.leftJoinAndSelect(`${this.repository.qbName}.key`, 'key'),
+    );
   }
 }
