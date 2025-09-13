@@ -50,10 +50,10 @@ import { AccessModule } from '@/modules/Access/access.module';
       provide: APP_INTERCEPTOR,
       useClass: AppInterceptor,
     },
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}
