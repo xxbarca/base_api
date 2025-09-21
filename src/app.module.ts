@@ -33,7 +33,7 @@ import { AccessModule } from '@/modules/Access/access.module';
       useValue: new AppPipe({
         transform: true,
         whitelist: true,
-        forbidNonWhitelisted: true,
+        forbidNonWhitelisted: false,
         forbidUnknownValues: true,
         validationError: { target: false },
       }),
