@@ -41,6 +41,7 @@ export class CommonCategoryDto {
   img: string;
 
   @IsEnum(OnlineStatus, { always: true, message: '无效的状态信息' })
+  @ValidateIf((value) => !!value)
   @IsOptional({ groups: ['update', 'paginate'] })
   online: OnlineStatus;
 
